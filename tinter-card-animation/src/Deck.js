@@ -90,25 +90,48 @@ export default class Deck extends Component {
       return this.props.renderNoMoreCards()
     }
 
-    return this.props.data.map((item, index) => {
-      if (index < this.state.index) return null
+    return this.props.data
+      .map((item, index) => {
+        if (index < this.state.index) return null
 
-      if (index === this.state.index) {
+        if (index === this.state.index) {
+          return (
+            <Animated.View
+              style={[this.getCardStyle(), styles.cardStyle]}
+              key={item.id}
+              {...this.panResponder.panHandlers}
+            >
+              {this.props.renderCard(item)}
+            </Animated.View>
+          )
+        }
         return (
+          // NOTE: we are using an Animated.View here for a good reason
+          // if we use a View.. react will rerender the image in the card
+          // this will cause the image to be refetched, and possibly a netword request
+          // which then causes a flash
           <Animated.View
-            style={this.getCardStyle()}
             key={item.id}
-            {...this.panResponder.panHandlers}
+            style={[styles.cardStyle, { top: 10 * (index - this.state.index) }]}
           >
             {this.props.renderCard(item)}
           </Animated.View>
         )
-      }
-      return this.props.renderCard(item)
-    })
+      })
+      .reverse()
   }
 
   render() {
     return <View>{this.renderCards()}</View>
   }
+}
+
+const styles = {
+  cardStyle: {
+    position: 'absolute',
+    width: SCREEN_WIDTH * 0.8,
+    // note left, and right position conflict with animations
+    // left: 0,
+    // right: 0,
+  },
 }
