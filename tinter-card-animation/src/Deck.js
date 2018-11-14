@@ -4,7 +4,10 @@ import { View, PanResponder, Animated } from 'react-native'
 export default class Deck extends Component {
   constructor(props) {
     super(props)
-    
+
+    // keep track of the card position
+    this.position = new Animated.ValueXY()
+
     // note we don't really use pan responder with state
     // you might see this in the docs..
     // but we'll never set state and update the pan responder
@@ -17,19 +20,42 @@ export default class Deck extends Component {
       },
       // called anytime the user drags finger
       onPanResponderMove: (event, gesture) => {
-        console.log(gesture)
+        this.position.setValue({ x: gesture.dx, y: gesture.dy })
       },
       onPanResponderRelease: () => {
-        console.log('released') 
+        console.log('released')
+      },
+    })
+  }
+
+  getCardStyle() {
+    const rotate = this.position.x.interpolate({
+      inputRange: [-500, 0, 500],
+      outputRange: ['-120deg', '0deg', '120deg'],
+    })
+    return {
+      ...this.position.getLayout(),
+      transform: [{ rotate }],
+    }
+  }
+
+  renderCards() {
+    return this.props.data.map((item, index) => {
+      if (index === 0) {
+        return (
+          <Animated.View
+            style={this.getCardStyle()}
+            key={item.id}
+            {...this.panResponder.panHandlers}
+          >
+            {this.props.renderCard(item)}
+          </Animated.View>
+        )
       }
     })
   }
 
-  renderCards() {
-    return this.props.data.map(item => this.props.renderCard(item))
-  }
-
   render() {
-    return <View {...this.panResponder.panHandlers}>{this.renderCards()}</View>
+    return <View>{this.renderCards()}</View>
   }
 }
