@@ -5,7 +5,7 @@ import { Card, Button } from 'react-native-elements'
 import Deck from './src/Deck'
 
 export default class App extends React.Component {
-  renderCard(item) {
+  static renderCard(item) {
     return (
       <Card title={item.title} image={{ uri: item.uri }} key={item.id}>
         <Text>Hii</Text>
@@ -17,7 +17,7 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Deck data={DATA} renderCard={this.renderCard} />
+        <Deck data={DATA} renderCard={App.renderCard} />
       </View>
     )
   }
@@ -27,8 +27,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 })
 
