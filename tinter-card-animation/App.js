@@ -14,10 +14,22 @@ export default class App extends React.Component {
     )
   }
 
+  static renderNoMoreCards() {
+    return (
+      <Card>
+        <Text>No more cards</Text>
+      </Card>
+    )
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Deck data={DATA} renderCard={App.renderCard} />
+        <Deck
+          data={DATA}
+          renderCard={App.renderCard}
+          renderNoMoreCards={App.renderNoMoreCards}
+        />
       </View>
     )
   }

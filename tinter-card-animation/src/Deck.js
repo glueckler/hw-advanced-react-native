@@ -7,6 +7,7 @@ const SWIPE_OUT_DURATION = 250
 
 export default class Deck extends Component {
   static defaultProps = {
+    data: [],
     onSwipeLeft() {},
     onSwipeRight() {},
   }
@@ -85,6 +86,10 @@ export default class Deck extends Component {
   }
 
   renderCards() {
+    if (this.state.index === this.props.data.length) {
+      return this.props.renderNoMoreCards()
+    }
+
     return this.props.data.map((item, index) => {
       if (index < this.state.index) return null
 
