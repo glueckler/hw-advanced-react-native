@@ -1,5 +1,12 @@
 import React, { Component } from 'react'
-import { View, PanResponder, Animated, Dimensions } from 'react-native'
+import {
+  View,
+  PanResponder,
+  Animated, // for interaction animations
+  LayoutAnimation, // for the simple animations
+  Dimensions,
+  UIManager,
+} from 'react-native'
 
 const SCREEN_WIDTH = Dimensions.get('window').width
 const SWIPE_THRESHOLD = SCREEN_WIDTH / 4
@@ -47,6 +54,15 @@ export default class Deck extends Component {
         }
       },
     })
+  }
+
+  UNSAFE_componentWillUpdate() {
+    // compatibility for Android
+    UIManager.setLayoutAnimationEnabledExperimental &&
+      UIManager.setLayoutAnimationEnabledExperimental(true)
+
+    // tells RN that anytime we update animate any changes
+    LayoutAnimation.spring()
   }
 
   getCardStyle() {
