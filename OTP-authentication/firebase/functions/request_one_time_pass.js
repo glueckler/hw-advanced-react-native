@@ -15,6 +15,12 @@ module.exports = function(req, res) {
     .getUser(phone)
     .then(userRecord => {
       const code = Math.floor(Math.random() * 8999 + 1000)
+
+      twilio.messages.create({
+        body: 'Your code is ' + code,
+        to: phone,
+        from: // phone number from twilio
+      })
       return userRecord
     })
     .catch((err) => {
