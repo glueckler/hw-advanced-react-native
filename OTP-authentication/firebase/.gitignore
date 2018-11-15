@@ -65,3 +65,4 @@ node_modules/
 .env
 
 firebase_secrets.json
+twilio_secrets.js

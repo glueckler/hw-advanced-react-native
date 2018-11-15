@@ -2,6 +2,7 @@ const admin = require('firebase-admin')
 const functions = require('firebase-functions');
 const serviceAccount = require('./firebase_secrets.json');
 const createUser = require('./create_user');
+const requireOneTimePassword = require('./require_one_time_pass')
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -16,3 +17,5 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
 
 // firebase recognizes all properties on exports as a cloud function
 exports.createUser = functions.https.onRequest(createUser)
+
+exports.requireOneTimePassword = functions.https.onRequest(requireOneTimePassword)
